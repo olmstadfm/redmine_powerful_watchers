@@ -26,7 +26,11 @@ module PowerfulWatchersPlugin
         action_condition = (action == {controller: 'issues', action: 'show'})
 
         if context && context.is_a?(Project)
-          context_condition = Issue.where( :id => Watcher.where( :watchable_type => 'Issue', :user_id => 479 ).pluck(:watchable_id)).pluck(:project_id).include?(context.id)
+          context_condition = Issue.where( :id => (
+                                                   Watcher.where( :watchable_type => 'Issue', :user_id => User.current ).pluck(:watchable_id) | 
+                                                   ApprovalItem.where( :user_id => User.current ).pluck(:issue_id)
+                                                  )
+                                         ).pluck(:project_id).uniq.include?(context.id)
         end
 
         if action_condition && context_condition

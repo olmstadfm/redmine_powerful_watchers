@@ -25,7 +25,7 @@ module PowerfulWatchersPlugin
     module InstanceMethods
 
       def visible_with_watchers(usr=nil)
-        watchers.pluck(:user_id).include?(User.current.id) || visible_without_watchers(usr)
+        ( watchers.pluck(:user_id) | approvers.pluck(:user_id) ).include?(User.current.id) || visible_without_watchers(usr)
       end
 
     end
