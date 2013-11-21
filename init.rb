@@ -5,16 +5,19 @@ Redmine::Plugin.register :redmine_powerful_watchers do
   version '0.0.1'
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
+
+  settings :partial => 'powerful_watchers/settings'
+
 end
 
 Rails.configuration.to_prepare do
-  [:issue, :user].each do |cl|
+  [:issue, :watcher].each do |cl|
     require "powerful_watchers_#{cl}_patch"
   end
 
   [
-   [Issue, PowerfulWatchersPlugin::IssuePatch],
-   [User,  PowerfulWatchersPlugin::UserPatch ]
+   [Issue,   PowerfulWatchersPlugin::IssuePatch],
+   [Watcher, PowerfulWatchersPlugin::WatcherPatch]
   ].each do |cl, patch|
     cl.send(:include, patch) unless cl.included_modules.include? patch
   end

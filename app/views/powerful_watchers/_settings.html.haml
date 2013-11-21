@@ -1,0 +1,3 @@
+%p
+  %label= "Роль наблюдателя"
+  = select_tag("settings[watcher_role_id]", options_from_collection_for_select(Role.all(:order => :position), :id, :name, (@settings[:watcher_role_id].to_i rescue nil)), :prompt => t(:prompt_please_select))
