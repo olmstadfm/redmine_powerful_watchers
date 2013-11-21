@@ -31,3 +31,12 @@ module PowerfulWatchersPlugin
     end
   end
 end
+
+# watchers condition
+# select id from issues where issues.id in (select watchable_id from watchers where watchable_type = 'Issue' AND user_id = 277);
+
+# approver_condition
+# select id from issues where issues.id in (select issue_id from approval_items where user_id = 479);
+
+# watchers_condition = "#{table_name}.id in (select watchable_id from watchers where watchable_type = 'Issue' AND user_id = #{user.id});"
+# approver_condition = "#{table_name}.id in (select issue_id from approval_items where user_id = #{user.id});"
