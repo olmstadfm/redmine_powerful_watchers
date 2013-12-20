@@ -46,8 +46,10 @@ module PowerfulWatchersPlugin
                      Member.create(project_id: project_id, user_id: self.user.id)
                    end
 
-          member.roles << role
-          member.save
+          unless member.roles.include?(role)
+            member.roles << role
+            member.save
+          end
 
         end
       end
