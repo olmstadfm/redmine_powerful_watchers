@@ -43,7 +43,7 @@ module PowerfulWatchersPlugin
           member = if user_is_already_member
                      Member.where(project_id: project_id, user_id: self.user_id).first
                    else
-                     Member.create(project_id: project_id, user_id: self.user.id)
+                     Member.new(project_id: project_id, user_id: self.user.id)
                    end
 
           unless member.roles.include?(role)
