@@ -21,7 +21,7 @@ module PowerfulWatchersPlugin
         role_id = Setting[:plugin_redmine_powerful_watchers][:watcher_role_id].to_i
         role = Role.find_by_id(role_id)
         unless role
-          Rails.logger.error("  Redmine Powerful Watchers Plugin: there is no watcher_role_id in settings.".red) 
+          Rails.logger.debug("  Redmine Powerful Watchers Plugin: there is no watcher_role_id in settings.".red) 
           return nil
         end
         role
@@ -73,18 +73,19 @@ module PowerfulWatchersPlugin
 
           unless other_issues_watched
 
-            Rails.logger.error("begin destroy role".red) 
+            Rails.logger.debug("begin destroy role".red) 
 
-            member = Member.where(project_id: project_id, user_id: self.user_id).first
-            new_roles = member.roles.select{|r| r.id != role.id}
-            unless new_roles.empty?
-              member.roles = new_roles
-              member.save
-            else
-              member.destroy
+            if member = Member.where(project_id: project_id, user_id: self.user_id).first
+              new_roles = member.roles.select{|r| r.id != role.id}
+              unless new_roles.empty?
+                member.roles = new_roles
+                member.save
+              else
+                member.destroy
+              end
             end
 
-            Rails.logger.error("end destroy role".red) 
+            Rails.logger.debug("end destroy role".red) 
 
           end
 
