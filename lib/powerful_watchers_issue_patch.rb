@@ -48,7 +48,7 @@ module PowerfulWatchersPlugin
     module InstanceMethods
 
       def visible_with_watchers(usr=nil)
-        (watchers.map(&:user_id) | approvers.map(&:user_id) ).include?(usr.try(:id) || User.current.id) || visible_without_watchers(usr)
+        (watchers.map(&:user_id) | approvers.map(&:id) ).include?(usr.try(:id) || User.current.id) || visible_without_watchers(usr)
       end
 
     end
